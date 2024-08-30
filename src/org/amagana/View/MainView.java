@@ -266,8 +266,10 @@ public class MainView extends javax.swing.JFrame {
                 }
                 Desarrollador dev = new Desarrollador(lenguaje, nombre, edad, salario);
                 DesarrolladorView devView = new DesarrolladorView(dev);
+         
                 DesarrolladorController devController = new DesarrolladorController(dev);
                 devController.trabajar();
+                
                 devController.trabajar("Proyecto X");
                 devView.mostrarInformacion();
             } else if ("Tester".equals(tipoEmpleado)) {
@@ -276,10 +278,13 @@ public class MainView extends javax.swing.JFrame {
                 }
                 Tester tester = new Tester(tipoPruebas, nombre, edad, salario);
                 TesterView testerView = new TesterView(tester);
+                
                 TesterController testerController = new TesterController(tester);
                 testerController.trabajar();
+                
                 testerController.trabajar(herramienta, proyecto);
                 testerView.mostrarInformacion();
+                
             } else if ("Empleado".equals(tipoEmpleado)) {
                 Empleado emp = new Empleado(nombre, edad, salario) {
                     @Override
@@ -289,6 +294,7 @@ public class MainView extends javax.swing.JFrame {
                 };
                 EmpleadoView empView = new EmpleadoView(emp);
                 EmpleadoController empController = new EmpleadoController(emp);
+                
                 empController.trabajar();
                 empView.mostrarInformacion();
             }
