@@ -1,13 +1,13 @@
 package org.amagana.System;
 
 import javax.swing.SwingUtilities;
-import org.amagana.View.MainFrame;
+import org.amagana.View.MainView;
 
 public class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MainFrame mainFrame = new MainFrame();
+            MainView mainFrame = new MainView();
             mainFrame.setVisible(true);
         });
     }
