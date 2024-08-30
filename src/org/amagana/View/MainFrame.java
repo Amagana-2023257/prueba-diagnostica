@@ -2,14 +2,9 @@ package org.amagana.View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import org.amagana.Model.Desarrollador;
-import org.amagana.Model.Empleado;
-import org.amagana.Model.Tester;
-import org.amagana.Controller.DesarrolladorController;
-import org.amagana.Controller.EmpleadoController;
-import org.amagana.Controller.TesterController;
+import java.awt.event.*;
+import org.amagana.Model.*;
+import org.amagana.Controller.*;
 
 public class MainFrame extends JFrame {
     private JTextField nombreField;
@@ -75,41 +70,61 @@ public class MainFrame extends JFrame {
     }
 
     private void crearEmpleado() {
-        String nombre = nombreField.getText();
-        int edad = Integer.parseInt(edadField.getText());
-        double salario = Double.parseDouble(salarioField.getText());
-        String lenguaje = lenguajeField.getText();
-        String tipoPruebas = tipoPruebasField.getText();
-        String herramienta = herramientaField.getText();
-        String proyecto = proyectoField.getText();
-        String tipoEmpleado = (String) tipoEmpleadoBox.getSelectedItem();
+        try {
+            // Recoger datos del formulario
+            String nombre = nombreField.getText();
+            int edad = Integer.parseInt(edadField.getText());
+            double salario = Double.parseDouble(salarioField.getText());
+            String lenguaje = lenguajeField.getText();
+            String tipoPruebas = tipoPruebasField.getText();
+            String herramienta = herramientaField.getText();
+            String proyecto = proyectoField.getText();
+            String tipoEmpleado = (String) tipoEmpleadoBox.getSelectedItem();
 
-        // Crear instancias y controladores
-        if ("Desarrollador".equals(tipoEmpleado)) {
-            Desarrollador dev = new Desarrollador(lenguaje, nombre, edad, salario);
-            DesarrolladorView devView = new DesarrolladorView(dev);
-            DesarrolladorController devController = new DesarrolladorController(dev);
-            devController.trabajar();
-            devController.trabajar("Proyecto X");
-            devView.mostrarInformacion();
-        } else if ("Tester".equals(tipoEmpleado)) {
-            Tester tester = new Tester(tipoPruebas, nombre, edad, salario);
-            TesterView testerView = new TesterView(tester);
-            TesterController testerController = new TesterController(tester);
-            testerController.trabajar();
-            testerController.trabajar(herramienta, proyecto);
-            testerView.mostrarInformacion();
-        } else if ("Empleado".equals(tipoEmpleado)) {
-            Empleado emp = new Empleado(nombre, edad, salario) {
-                @Override
-                public void trabajar() {
-                    System.out.println(getNombre() + " está trabajando en tareas generales.");
+            // Validar que los campos obligatorios no estén vacíos
+            if (nombre.isEmpty() || tipoEmpleado == null) {
+                throw new IllegalArgumentException("Todos los campos deben estar completos.");
+            }
+
+            // Crear instancias y controladores basados en el tipo de empleado
+            if ("Desarrollador".equals(tipoEmpleado)) {
+                if (lenguaje.isEmpty()) {
+                    throw new IllegalArgumentException("El campo Lenguaje de Programación no puede estar vacío.");
                 }
-            };
-            EmpleadoView empView = new EmpleadoView(emp);
-            EmpleadoController empController = new EmpleadoController(emp);
-            empController.trabajar();
-            empView.mostrarInformacion();
+                Desarrollador dev = new Desarrollador(lenguaje, nombre, edad, salario);
+                DesarrolladorView devView = new DesarrolladorView(dev);
+                DesarrolladorController devController = new DesarrolladorController(dev);
+                devController.trabajar();
+                devController.trabajar("Proyecto X");
+                devView.mostrarInformacion();
+            } else if ("Tester".equals(tipoEmpleado)) {
+                if (tipoPruebas.isEmpty() || herramienta.isEmpty() || proyecto.isEmpty()) {
+                    throw new IllegalArgumentException("Todos los campos del Tester deben estar completos.");
+                }
+                Tester tester = new Tester(tipoPruebas, nombre, edad, salario);
+                TesterView testerView = new TesterView(tester);
+                TesterController testerController = new TesterController(tester);
+                testerController.trabajar();
+                testerController.trabajar(herramienta, proyecto);
+                testerView.mostrarInformacion();
+            } else if ("Empleado".equals(tipoEmpleado)) {
+                Empleado emp = new Empleado(nombre, edad, salario) {
+                    @Override
+                    public void trabajar() {
+                        System.out.println(getNombre() + " está trabajando en tareas generales.");
+                    }
+                };
+                EmpleadoView empView = new EmpleadoView(emp);
+                EmpleadoController empController = new EmpleadoController(emp);
+                empController.trabajar();
+                empView.mostrarInformacion();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores válidos para edad y salario.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
