@@ -4,8 +4,8 @@ package org.amagana.Model;
  *
  * @author amagana
  */
-public class Empleado {
-    private String nombre ;
+public abstract class Empleado {
+    private String nombre;
     private int edad;
     private double salario;
 
@@ -41,7 +41,12 @@ public class Empleado {
     public void setSalario(double salario) {
         this.salario = salario;
     }
-    
-    
-    
+
+    // Método abstracto
+    public abstract void trabajar();
+
+    // Método sobrecargado
+    public void trabajar(int horas) {
+        System.out.println(getNombre() + " trabaja " + horas + " horas.");
+    }
 }

@@ -6,12 +6,16 @@ import org.amagana.Model.Empleado;
  *
  * @author amagana
  */
-public class EmpleadoController implements IEmpleado{
+public class EmpleadoController implements IEmpleado {
+
+    private Empleado empleado;
+
+    public EmpleadoController(Empleado empleado) {
+        this.empleado = empleado;
+    }
 
     @Override
     public void trabajar() {
-        Empleado e = new Empleado();
-        System.out.println(e.getNombre() + " está desarrollando código en " + ".");
+        empleado.trabajar();
     }
-    
 }
